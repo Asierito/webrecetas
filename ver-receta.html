@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/styles.css"/>
+    <title>Ver Receta</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            padding-top: 4.5rem;
+            background-color: #151f28;
+            color: #f2f5f7;
+        }
+
+        nav {
+            height: 4.5rem;
+            width: 100vw;
+            background-color: #131418;
+            box-shadow: 0 3px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            position: fixed;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            padding: 1vh 1vw;
+            text-align: center;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            width: 88vw;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        .nav-links li a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 0.7vw;
+        }
+
+        .nav-links li a:hover {
+            color: #61DAFB;
+        }
+
+        .recipe-detail-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1c1f24;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .recipe-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .recipe-header h1 {
+            font-size: 2em;
+            color: #61DAFB;
+        }
+
+        .recipe-header img {
+            max-width: 200px;
+            border-radius: 8px;
+        }
+
+        .recipe-section {
+            margin-bottom: 20px;
+        }
+
+        .recipe-section h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #00f7ff;
+        }
+
+        .ingredients-list, .instructions-list {
+            padding-left: 20px;
+            list-style: disc;
+        }
+
+        .instructions-list {
+            list-style: decimal;
+        }
+
+        .delete-button {
+            display: inline-block;
+            background-color: #ff5c5c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .delete-button:hover {
+            background-color: #e60000;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo" style="display: flex; align-items: center;">
+            <span style="color:#01939c; font-size:26px; font-weight:bold; letter-spacing: 1px; margin-left: 20px;">RECETAS PARRA</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="agregar-receta.html">Añadir Recetas</a></li>
+            <li><a href="perfil.html">Perfil</a></li>
+            <li><a href="contactanos.html">Contactanos</a></li>
+            <li><a href="login.html">Registrate</a></li>
+        </ul>
+    </nav>
+
+    <div class="recipe-detail-container">
+        <div class="recipe-header">
+            <h1 id="recipe-title"></h1>
+            <img id="recipe-image" src="" alt="Imagen de la receta">
+        </div>
+        <div class="recipe-section">
+            <h3>Ingredientes</h3>
+            <ul id="recipe-ingredients" class="ingredients-list"></ul>
+        </div>
+        <div class="recipe-section">
+            <h3>Elaboración</h3>
+            <ol id="recipe-instructions" class="instructions-list"></ol>
+        </div>
+        <button class="delete-button" id="delete-recipe">Eliminar Receta</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const recipeIndex = localStorage.getItem('selectedRecipe');
+            const recipes = JSON.parse(localStorage.getItem('recipes'));
+
+            if (recipeIndex && recipes) {
+                const recipe = recipes[recipeIndex];
+
+                document.getElementById('recipe-title').textContent = recipe.title;
+                document.getElementById('recipe-image').src = recipe.image;
+
+                const ingredientsList = document.getElementById('recipe-ingredients');
+                recipe.ingredients.split('\n').forEach(ingredient => {
+                    const li = document.createElement('li');
+                    li.textContent = ingredient;
+                    ingredientsList.appendChild(li);
+                });
+
+                const instructionsList = document.getElementById('recipe-instructions');
+                recipe.instructions.split('\n').forEach((instruction, index) => {
+                    const li = document.createElement('li');
+                    li.textContent = instruction;
+                    instructionsList.appendChild(li);
+                });
+            }
+
+            // Botón de eliminar receta
+            document.getElementById('delete-recipe').addEventListener('click', () => {
+                if (confirm('¿Estás seguro de que deseas eliminar esta receta?')) {
+                    recipes.splice(recipeIndex, 1);
+                    localStorage.setItem('recipes', JSON.stringify(recipes));
+                    window.location.href = 'index.html';  // Redirigir a la página principal después de eliminar
+                }
+            });
+        });
+    </script>
+</body>
+</html>

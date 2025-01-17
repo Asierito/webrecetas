@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/styles.css"/>
+    <title>Agregar Receta</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    overflow-x: hidden;
+    padding-top: 4.5rem; /* Espacio para la barra de navegación */
+    background-color: #151f28;
+}
+
+h2 {
+    font-size: 2em;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+nav {
+    height: 4.5rem;
+    width: 100vw;
+    background-color: #131418;
+    box-shadow: 0 3px 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    position: fixed; /* Mantiene la barra fija */
+    top: 0; /* Pegado a la parte superior */
+    z-index: 10; /* Asegúrate de que esté por encima de otros elementos */
+}
+
+.logo {
+    padding: 1vh 1vw;
+    text-align: center;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none; 
+    width: 88vw;
+    padding: 0 0.7vw;
+    justify-content: space-evenly;
+    align-items: center;
+    text-transform: uppercase;
+}
+
+.nav-links li a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 0.7vw;
+}
+
+
+        .nav-links li a:hover {
+            color: #61DAFB;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1c1f24;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #61DAFB;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #f2f5f7;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            background-color: #2a2d35;
+            border: none;
+            color: #f2f5f7;
+            border-radius: 4px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .button-container {
+            text-align: center;
+        }
+
+        .submit-button {
+            background-color: #61DAFB;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            color: #131418;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background-color: #01939c;
+        }
+    </style>
+</head>
+<body>
+    
+    <nav>
+        <div class="logo" style="display: flex; align-items: center;">
+            <span style="color:#01939c; font-size:26px; font-weight:bold; letter-spacing: 1px; margin-left: 20px;">RECETAS PARRA</span>
+        </div>
+        <div class="hamburger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="ver-receta.html">Recetas</a></li>
+            <li><a href="agregar-receta.html">Añadir Recetas</a></li>
+            <li><a href="perfil.html">Perfil</a></li>
+            <li><a href="contactanos.html">Contactanos</a></li>
+            <li><button class="login-button" href="login.html">Login</button></li>
+        </ul>
+    </nav>
+
+    <div class="form-container">
+        <h2>Agregar Nueva Receta</h2>
+        <form id="recipe-form">
+            <div class="form-group">
+                <label for="title">Título de la receta</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="image">URL de la imagen</label>
+                <input type="url" id="image" name="image" required>
+            </div>
+            <div class="form-group">
+                <label for="ingredients">Ingredientes</label>
+                <textarea id="ingredients" name="ingredients" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="instructions">Instrucciones</label>
+                <textarea id="instructions" name="instructions" required></textarea>
+            </div>
+            <div class="button-container">
+                <button type="submit" class="submit-button">Agregar Receta</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Función para manejar el envío del formulario
+        document.getElementById('recipe-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('title').value;
+            const image = document.getElementById('image').value;
+            const ingredients = document.getElementById('ingredients').value;
+            const instructions = document.getElementById('instructions').value;
+
+            // Obtener recetas del localStorage
+            const recipes = JSON.parse(localStorage.getItem('recipes')) || [];
+
+            // Nueva receta
+            const newRecipe = {
+                title,
+                image,
+                ingredients,
+                instructions
+            };
+
+            // Agregar la receta a la lista de recetas
+            recipes.push(newRecipe);
+
+            // Guardar en localStorage
+            localStorage.setItem('recipes', JSON.stringify(recipes));
+
+            // Redirigir a la página principal
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

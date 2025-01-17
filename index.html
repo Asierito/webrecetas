@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/styles.css"/>
+    <title>Página Principal de Recetas</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            overflow-x: hidden;
+            padding-top: 4.5rem; /* Espacio para la barra de navegación */
+            background-color: #151f28;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        nav {
+            height: 4.5rem;
+            width: 100vw;
+            background-color: #131418;
+            box-shadow: 0 3px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            position: fixed; /* Mantiene la barra fija */
+            top: 0; /* Pegado a la parte superior */
+            z-index: 10; /* Asegúrate de que esté por encima de otros elementos */
+        }
+
+        .logo {
+            padding: 1vh 1vw;
+            text-align: center;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none; 
+            width: 88vw;
+            padding: 0 0.7vw;
+            justify-content: space-evenly;
+            align-items: center;
+            text-transform: uppercase;
+        }
+
+        .nav-links li a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 0.7vw;
+        }
+        .nav-links li a:hover {
+            color: #61DAFB;
+        }
+
+        .recipe-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        /* Estilo para las tarjetas */
+        .recipe-card {
+            background: #191919;
+            border-radius: 15px;
+            overflow: hidden;
+            width: 250px; /* Ancho reducido para tarjetas más pequeñas */
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .recipe-card img {
+            width: 100%;
+            height: 150px; /* Altura fija para mantener consistencia */
+            object-fit: cover;
+        }
+
+        .recipe-card .content {
+            padding: 15px;
+            color: #fff;
+        }
+
+        .recipe-card .title {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #00f7ff;
+            text-shadow: 0 0 5px #00f7ff;
+        }
+
+        .recipe-card .view-recipe {
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #00f7ff;
+            color: #191919;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .recipe-card .view-recipe:hover {
+            background-color: #01939c;
+            color: #fff;
+            box-shadow: 0 0 10px #00f7ff;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo" style="display: flex; align-items: center;">
+            <span style="color:#01939c; font-size:26px; font-weight:bold; letter-spacing: 1px; margin-left: 20px;">RECETAS PARRA</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="agregar-receta.html">Añadir Recetas</a></li>
+            <li><a href="profile.html">Perfil</a></li>
+            <li><a href="contactanos.html">Contactanos</a></li>
+            <li><a href="login.html">Registrate</a></li>
+        </ul>
+    </nav>
+
+    <h2>Recetas Disponibles</h2>
+    <div class="recipe-container" id="recipe-container"></div>
+
+    <script>
+        function loadRecipes() {
+            const recipeContainer = document.getElementById('recipe-container');
+            let recipes = JSON.parse(localStorage.getItem('recipes')) || [];
+
+            recipes.forEach((recipe, index) => {
+                const card = document.createElement('div');
+                card.classList.add('recipe-card');
+
+                const img = document.createElement('img');
+                img.src = recipe.image; // Asegúrate de que esto sea una URL válida
+                img.alt = recipe.name;
+
+                const content = document.createElement('div');
+                content.classList.add('content');
+
+                const title = document.createElement('div');
+                title.classList.add('title');
+                title.textContent = recipe.name; // Aquí se asigna el nombre de la receta
+
+                const button = document.createElement('button');
+                button.classList.add('view-recipe');
+                button.textContent = 'Ver Receta';
+                button.onclick = () => {
+                    localStorage.setItem('selectedRecipe', index);
+                    window.location.href = 'ver-receta.html'; // Cambia a la página de ver receta
+                };
+
+                content.appendChild(title);
+                content.appendChild(button);
+                card.appendChild(img);
+                card.appendChild(content);
+
+                recipeContainer.appendChild(card);
+            });
+        }
+
+        // Cargar recetas al inicio
+        document.addEventListener('DOMContentLoaded', loadRecipes);
+    </script>
+</body>
+</html>
