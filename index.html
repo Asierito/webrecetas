@@ -18,7 +18,7 @@
 
         body {
             overflow-x: hidden;
-            padding-top: 4.5rem; /* Espacio para la barra de navegación */
+            padding-top: 6rem;
             background-color: #151f28;
         }
 
@@ -35,9 +35,10 @@
             background-color: #131418;
             box-shadow: 0 3px 20px rgba(0, 0, 0, 0.2);
             display: flex;
-            position: fixed; /* Mantiene la barra fija */
-            top: 0; /* Pegado a la parte superior */
-            z-index: 10; /* Asegúrate de que esté por encima de otros elementos */
+            align-items: center;
+            position: fixed;
+            top: 0;
+            z-index: 10;
         }
 
         .logo {
@@ -47,8 +48,8 @@
 
         .nav-links {
             display: flex;
-            list-style: none; 
-            width: 88vw;
+            list-style: none;
+            width: 60vw;
             padding: 0 0.7vw;
             justify-content: space-evenly;
             align-items: center;
@@ -60,8 +61,39 @@
             text-decoration: none;
             margin: 0 0.7vw;
         }
+
         .nav-links li a:hover {
             color: #61DAFB;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            padding-right: 10px;
+        }
+
+        .search-bar input {
+            padding: 5px;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .search-bar button {
+            padding: 5px 10px;
+            font-size: 1rem;
+            background-color: #00f7ff;
+            color: #191919;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .search-bar button:hover {
+            background-color: #01939c;
         }
 
         .recipe-container {
@@ -72,12 +104,11 @@
             padding: 20px;
         }
 
-        /* Estilo para las tarjetas */
         .recipe-card {
             background: #191919;
-            border-radius: 15px;
+            border-radius: 10px;
             overflow: hidden;
-            width: 250px; /* Ancho reducido para tarjetas más pequeñas */
+            width: 300px;
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
@@ -92,12 +123,12 @@
 
         .recipe-card img {
             width: 100%;
-            height: 150px; /* Altura fija para mantener consistencia */
+            height: 150px;
             object-fit: cover;
         }
 
         .recipe-card .content {
-            padding: 15px;
+            padding: 20px;
             color: #fff;
         }
 
@@ -138,8 +169,12 @@
             <li><a href="agregar-receta.html">Añadir Recetas</a></li>
             <li><a href="profile.html">Perfil</a></li>
             <li><a href="contactanos.html">Contactanos</a></li>
-            <li><a href="login.html">Registrate</a></li>
+            <li><a href="register2.html">Registrate</a></li>
         </ul>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar recetas...">
+            <button onclick="searchRecipes()">Buscar</button>
+        </div>
     </nav>
 
     <h2>Recetas Disponibles</h2>
@@ -155,7 +190,7 @@
                 card.classList.add('recipe-card');
 
                 const img = document.createElement('img');
-                img.src = recipe.image; // Asegúrate de que esto sea una URL válida
+                img.src = recipe.image;
                 img.alt = recipe.name;
 
                 const content = document.createElement('div');
@@ -163,14 +198,14 @@
 
                 const title = document.createElement('div');
                 title.classList.add('title');
-                title.textContent = recipe.name; // Aquí se asigna el nombre de la receta
+                title.textContent = recipe.name;
 
                 const button = document.createElement('button');
                 button.classList.add('view-recipe');
                 button.textContent = 'Ver Receta';
                 button.onclick = () => {
                     localStorage.setItem('selectedRecipe', index);
-                    window.location.href = 'ver-receta.html'; // Cambia a la página de ver receta
+                    window.location.href = 'ver-receta.html';
                 };
 
                 content.appendChild(title);
@@ -182,8 +217,18 @@
             });
         }
 
-        // Cargar recetas al inicio
+        function searchRecipes() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const recipes = document.querySelectorAll('.recipe-card');
+
+            recipes.forEach(recipe => {
+                const title = recipe.querySelector('.title').textContent.toLowerCase();
+                recipe.style.display = title.includes(input) ? '' : 'none';
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', loadRecipes);
     </script>
 </body>
 </html>
+
